@@ -29,17 +29,20 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              ProductDetailScreen.productRoute,
-              arguments: product.id,
-            );
-          },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                ProductDetailScreen.productRoute,
+                arguments: product.id,
+              );
+            },
+            child: Hero(
+              tag: product.id,
+              child: FadeInImage(
+                placeholder: AssetImage('assets/images/place_holder.png'),
+                image: NetworkImage(product.imageUrl),
+                fit: BoxFit.cover,
+              ),
+            )),
         header: GridTileBar(
           backgroundColor: Colors.black12,
           title: Text(
@@ -79,9 +82,12 @@ class ProductItem extends StatelessWidget {
                     'Added item to cart!',
                   ),
                   duration: Duration(seconds: 5),
-                  action: SnackBarAction(label: 'UNDO', onPressed: (){
-                    cart.removeQuantity(product.id);
-                  },),
+                  action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () {
+                      cart.removeQuantity(product.id);
+                    },
+                  ),
                 ),
               );
             },
